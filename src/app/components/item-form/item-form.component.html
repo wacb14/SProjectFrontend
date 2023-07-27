@@ -1,0 +1,42 @@
+<div class="container">
+  <form [formGroup]="itemForm" (ngSubmit)="onSaveItem()">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <h2>Item form</h2>
+        <label for="inpName" class="form-label">Name</label>
+        <input
+          id="inpName"
+          type="text"
+          class="form-control"
+          formControlName="name"
+        />
+        <label for="inpDescription" class="form-label">Description</label>
+        <textarea
+          id="inpDescription"
+          type="text"
+          class="form-control"
+          formControlName="description"
+        >
+        </textarea>
+        <label for="inpPrice" class="form-label">Price</label>
+        <input
+          id="inpPrice"
+          type="number"
+          class="form-control"
+          formControlName="price"
+          min="0"
+        />
+        <div class="row p-3">
+          <div class="col text-center">
+            <button class="btn btn-primary" type="submit">Save</button>
+          </div>
+          <div class="col text-center">
+            <button class="btn btn-danger" type="button" (click)="goItemList()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
