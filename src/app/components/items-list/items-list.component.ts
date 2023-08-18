@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from 'src/app/services/item.service';
@@ -8,16 +8,23 @@ import { ItemService } from 'src/app/services/item.service';
   templateUrl: './items-list.component.html',
   styleUrls: ['./items-list.component.css'],
 })
-export class ItemsListComponent {
-  items:Array<Item> = [new Item(1,'a','a',321), new Item(2,'b','b',66)];
+export class ItemsListComponent implements OnInit {
+  items: Array<Item> = [];
   constructor(private itemService: ItemService, private router: Router) {}
-  onEditItem(id:number){
-    this.router.navigate(['/item',id]);
+  ngOnInit(): void {
+    this.itemService.getItems().subscribe((response) => {
+      this.items = response;
+    });
   }
-  onDeleteItem(id:number){
-    this.itemService.deleteItem(id);
+  onEditItem(id: number) {
+    this.router.navigate(['/item', id]);
   }
-  goToItemForm(){
+  onDeleteItem(id: number) {
+    this.itemService.deleteItem(id).subscribe((response) => {
+      console.log('Item deleted: ' + response);
+    });
+  }
+  goToItemForm() {
     this.router.navigate(['/item']);
   }
 }

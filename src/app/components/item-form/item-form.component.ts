@@ -37,9 +37,11 @@ export class ItemFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    if(this.id){
-      this.itemTemp = this.itemService.getItem(this.id);
-      this.loadForm();
+    if (this.id) {
+      this.itemService.getItem(this.id).subscribe((response) => {
+        this.itemTemp = response;
+        this.loadForm();
+      });
     }
   }
   loadForm() {
@@ -48,18 +50,25 @@ export class ItemFormComponent implements OnInit {
     this.price?.setValue(this.itemTemp.price.toString());
   }
   onSaveItem() {
-    let item = {
-      id: -1,
-      name: this.name?.value,
-      description: this.description?.value,
-      price: this.price?.value,
-    };
-    if (this.id) {
-      this.itemService.updateItem(item); // Edit case
-    } else {
-      this.itemService.postItem(item); // New case
+    if (this.name?.value && this.description?.value && this.price?.value) {
+      let item = new Item(
+        0,
+        this.name?.value,
+        this.description?.value,
+        Number.parseFloat(this.price?.value)
+      );
+      if (this.id) {
+        item.id = this.id;
+        this.itemService.updateItem(this.id, item).subscribe((response) => {
+          console.log('Item updated');
+        }); // Edit case
+      } else {
+        this.itemService.postItem(item).subscribe((response) => {
+          console.log('New item saved');
+        }); // New case
+      }
+      this.goItemList();
     }
-    this.goItemList();
   }
   goItemList() {
     this.router.navigate(['/']);
