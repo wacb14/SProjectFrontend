@@ -61,10 +61,12 @@ export class ItemFormComponent implements OnInit {
         item.id = this.id;
         this.itemService.updateItem(this.id, item).subscribe((response) => {
           console.log('Item updated');
+          this.itemService.msgItem.emit(response.id);
         }); // Edit case
       } else {
         this.itemService.postItem(item).subscribe((response) => {
           console.log('New item saved');
+          this.itemService.msgItem.emit(response.id);
         }); // New case
       }
       this.goItemList();

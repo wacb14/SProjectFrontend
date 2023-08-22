@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Item } from '../models/item.model';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,7 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root',
 })
 export class ItemService {
+  msgItem = new EventEmitter<number>();
   constructor(private http: HttpClient) {}
   getItems(): Observable<Array<Item>> {
     return this.http.get<Array<Item>>(environment.apiURL + '/Item/GetItems');
